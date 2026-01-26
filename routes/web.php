@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 // Global Controllers
-use App\Http\Controllers\global\AuthController;
+use App\Http\Controllers\Global\AuthController;
 
 Route::get("/", [AuthController::class, "signedInStatus"])->name("login");
 Route::prefix("auth")->group(function () {
