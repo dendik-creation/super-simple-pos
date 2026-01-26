@@ -6,6 +6,7 @@ use App\Http\Controllers\Global\AuthController;
 use App\Http\Controllers\Global\DashboardController;
 // Spesific Controllers
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CustomerController;
 
 Route::get("/", [AuthController::class, "signedInStatus"])->name("login");
 Route::prefix("auth")->group(function () {
@@ -33,20 +34,37 @@ Route::prefix("admin")
         // Users
         Route::prefix("users")->group(function () {
             Route::get("/", [UserController::class, "index"])->name(
-                "users.index",
+                "admin.users.index",
             );
             Route::post("/", [UserController::class, "store"])->name(
-                "users.store",
+                "admin.users.store",
             );
             Route::put("/{user}", [UserController::class, "update"])->name(
-                "users.update",
+                "admin.users.update",
             );
             Route::delete("/{user}", [UserController::class, "destroy"])->name(
-                "users.destroy",
+                "admin.users.destroy",
             );
             Route::put("/{id}/reset-password", [
                 UserController::class,
                 "resetPassword",
             ])->name("admin.users.reset-password");
+        });
+
+        // Customers
+        Route::prefix("customers")->group(function () {
+            Route::get("/", [CustomerController::class, "index"])->name(
+                "admin.customers.index",
+            );
+            Route::post("/", [CustomerController::class, "store"])->name(
+                "admin.customers.store",
+            );
+            Route::put("/{user}", [CustomerController::class, "update"])->name(
+                "admin.customers.update",
+            );
+            Route::delete("/{user}", [
+                CustomerController::class,
+                "destroy",
+            ])->name("admin.customers.destroy");
         });
     });

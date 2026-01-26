@@ -1,14 +1,15 @@
+import { PaginatorBuilder, SearchInput } from "@/components/custom/FormElement";
 import {
-    PaginatorBuilder,
-    SearchInput,
-    SelectSearchInput,
-} from "@/components/custom/FormElement";
-import {
-    humanRole,
+    handleElipsisText,
     inputDebounce,
     ymdToIdDate,
 } from "@/components/helper/helper";
-import { Button } from "@/components/ui/button";
+import AppLayout from "@/partials/AppLayout";
+import { PageTitle } from "@/partials/PageTitle";
+import { router, useForm } from "@inertiajs/react";
+import React, { useEffect, useRef } from "react";
+import AdminCustomerCreate from "./ModalCreate";
+import AdminCustomerEdit from "./ModalEdit";
 import {
     Table,
     TableBody,
@@ -17,27 +18,27 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import AppLayout from "@/partials/AppLayout";
-import { PageTitle, PageTitleProps } from "@/partials/PageTitle";
-import { router, useForm } from "@inertiajs/react";
-import { SearchXIcon, Trash2 } from "lucide-react";
-import { useEffect, useRef } from "react";
-import AdminUserCreate from "./ModalCreate";
-import AdminUserEdit from "./ModalEdit";
-import AdminUserModalResetPassword from "./ModalResetPassword";
 import ConfirmDialog from "@/components/custom/ConfirmDialog";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 import EmptyTable from "@/components/custom/EmptyTable";
-import { User } from "@/types/user";
+import { PageTitleProps } from "@/partials/PageTitle";
 import { PaginationData } from "@/types/global";
+import { Customer } from "@/types/customer";
 
 type PageProps = PageTitleProps & {
-    users: PaginationData<User>;
+    customers: PaginationData<Customer>;
     filters: {
-        search?: string | null;
+        search?: string;
     };
 };
 
-const AdminUserIndex = ({ title, description, users, filters }: PageProps) => {
+const AdminCustomerIndex = ({
+    title,
+    description,
+    customers,
+    filters,
+}: PageProps) => {
     const firstRender = useRef(true);
     const { data: filterData, setData: setFilterData } = useForm({
         search: filters.search || "",
@@ -49,23 +50,23 @@ const AdminUserIndex = ({ title, description, users, filters }: PageProps) => {
 
     const debounceSearch = inputDebounce((data: typeof filterData) => {
         router.get(
-            "/admin/users",
+            "/admin/customers",
             {
                 search: data.search,
             },
             {
                 preserveState: true,
                 replace: true,
-                only: ["users"],
+                only: ["customers"],
             },
         );
     });
 
     const handleDelete = (id: number) => {
-        router.delete(`/admin/users/${id}`, {
+        router.delete(`/admin/customers/${id}`, {
             preserveScroll: true,
             replace: true,
-            only: ["users"],
+            only: ["customers"],
         });
     };
 
@@ -79,16 +80,17 @@ const AdminUserIndex = ({ title, description, users, filters }: PageProps) => {
     return (
         <AppLayout>
             <PageTitle title={title} description={description} />
+
             <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2 w-full">
                     <SearchInput
-                        placeholder={`Cari berdasarkan username atau nama`}
+                        placeholder={`Cari nama, no telp...`}
                         className="lg:max-w-sm w-full"
                         onChange={(e) => handleFilter("search", e.target.value)}
                         value={filterData.search || ""}
                     />
                 </div>
-                <AdminUserCreate />
+                <AdminCustomerCreate />
             </div>
 
             <div className="rounded-md border">
@@ -99,13 +101,16 @@ const AdminUserIndex = ({ title, description, users, filters }: PageProps) => {
                                 #
                             </TableHead>
                             <TableHead className="bg-stone-200 font-semibold">
-                                Username
-                            </TableHead>
-                            <TableHead className="bg-stone-200 font-semibold">
                                 Nama
                             </TableHead>
                             <TableHead className="bg-stone-200 font-semibold">
-                                Role
+                                No Telepon
+                            </TableHead>
+                            <TableHead className="bg-stone-200 font-semibold">
+                                Alamat
+                            </TableHead>
+                            <TableHead className="bg-stone-200 font-semibold">
+                                Terdata Sejak
                             </TableHead>
                             <TableHead className="bg-stone-200 font-semibold">
                                 Aksi
@@ -113,16 +118,24 @@ const AdminUserIndex = ({ title, description, users, filters }: PageProps) => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {users.data.map((user, index) => (
-                            <TableRow key={user.id}>
+                        {customers.data.map((customer, index) => (
+                            <TableRow key={customer.id}>
                                 <TableCell>{index + 1}</TableCell>
-                                <TableCell>{user.username}</TableCell>
-                                <TableCell>{user.name}</TableCell>
+                                <TableCell>{customer.name}</TableCell>
+                                <TableCell>{customer.phone || "-"}</TableCell>
+                                <TableCell>
+                                    {handleElipsisText(
+                                        customer.address || "",
+                                        40,
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    {ymdToIdDate(customer?.created_at)}
+                                </TableCell>
                                 <TableCell>
                                     <div className="flex items-center gap-2">
-                                        <AdminUserEdit user={user} />
-                                        <AdminUserModalResetPassword
-                                            id={user.id}
+                                        <AdminCustomerEdit
+                                            customer={customer}
                                         />
                                         <ConfirmDialog
                                             triggerNode={
@@ -135,33 +148,36 @@ const AdminUserIndex = ({ title, description, users, filters }: PageProps) => {
                                                     </Button>
                                                 </span>
                                             }
-                                            title="Hapus User"
-                                            description="Menghapus user menyebabkan kehilangan akses terhadap sistem. Apakah anda yakin ?"
+                                            title="Hapus Pelanggan"
+                                            description="Menghapus pelanggan menyebabkan kehilangan riwayat transaksi pelanggan. Apakah anda yakin ?"
                                             type="danger"
                                             confirmAction={() =>
-                                                handleDelete(user.id)
+                                                handleDelete(customer.id)
                                             }
                                         />
                                     </div>
                                 </TableCell>
                             </TableRow>
                         ))}
-                        {users.data.length == 0 && (
-                            <EmptyTable colSpan={6} message="User tidak ada" />
+                        {customers.data.length == 0 && (
+                            <EmptyTable
+                                colSpan={6}
+                                message="Pelanggan tidak ada"
+                            />
                         )}
                     </TableBody>
                 </Table>
             </div>
-            {users.total > users.per_page && (
+            {customers.total > customers.per_page && (
                 <PaginatorBuilder
-                    prevUrl={users.prev_page_url ?? "#"}
-                    nextUrl={users.next_page_url ?? "#"}
-                    currentPage={users.current_page}
-                    totalPage={users.last_page}
+                    prevUrl={customers.prev_page_url ?? "#"}
+                    nextUrl={customers.next_page_url ?? "#"}
+                    currentPage={customers.current_page}
+                    totalPage={customers.last_page}
                 />
             )}
         </AppLayout>
     );
 };
 
-export default AdminUserIndex;
+export default AdminCustomerIndex;
