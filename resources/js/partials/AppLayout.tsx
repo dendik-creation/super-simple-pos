@@ -41,7 +41,7 @@ export default function AppLayout({ children, className }: AppLayoutProps) {
                     <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">
                         {children}
                     </main>
-                    <AppFooter />
+                    {/*<AppFooter />*/}
                 </div>
             </div>
         </SidebarProvider>

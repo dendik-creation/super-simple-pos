@@ -65,6 +65,7 @@ export function SearchInput({
     onChange,
     placeholder = "Cari...",
     className,
+    disabled = false,
 }: SearchInputProps) {
     return (
         <div className={`relative w-full ${className}`}>
@@ -78,129 +79,29 @@ export function SearchInput({
                 autoCorrect="off"
                 autoCapitalize="none"
                 spellCheck="false"
+                disabled={disabled}
             />
-            <Search
-                className="absolute top-2.5 right-2 text-gray-500"
-                size={16}
-            />
-        </div>
-    );
-}
-
-export function SelectSearchInput({
-    value,
-    options,
-    onChange,
-    placeholder,
-    removeValue,
-    className,
-    tabIndex = 0,
-}: {
-    value: string;
-    options: SelectOption[];
-    onChange: (value: string | number) => void;
-    placeholder?: string;
-    removeValue?: () => void;
-    className?: string;
-    tabIndex?: number;
-}) {
-    const [open, setOpen] = useState(false);
-    const triggerRef = React.useRef<HTMLDivElement>(null);
-    React.useEffect(() => {
-        if (!open) return;
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Tab") {
-                setOpen(false);
-            }
-        };
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [open]);
-
-    return (
-        <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-                <div
-                    ref={triggerRef}
-                    role="combobox"
-                    aria-expanded={open}
-                    tabIndex={tabIndex}
-                    className={cn(
-                        "min-w-full py-1.5 justify-between relative border border-input rounded-md px-4 flex items-center cursor-pointer outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                        className,
-                    )}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            setOpen(!open);
-                        }
+            {value ? (
+                <button
+                    type="button"
+                    className="absolute top-2.5 cursor-pointer right-2 text-gray-500"
+                    onClick={() => {
+                        const event = {
+                            target: { value: "" },
+                        } as ChangeEvent<HTMLInputElement>;
+                        onChange(event);
                     }}
-                    onClick={() => setOpen((prev) => !prev)}
+                    tabIndex={-1}
                 >
-                    {value ? (
-                        <span className="font-normal">
-                            {
-                                options.find((option) => option.value == value)
-                                    ?.label
-                            }
-                        </span>
-                    ) : (
-                        <span className="font-normal text-slate-500">
-                            {placeholder}
-                        </span>
-                    )}
-                    {value != "" && value != undefined && removeValue ? (
-                        <span
-                            className="ml-2 h-4 w-4 shrink-0 opacity-50 cursor-pointer"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                removeValue();
-                            }}
-                        >
-                            <CircleX size={20} />
-                        </span>
-                    ) : (
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    )}
-                </div>
-            </PopoverTrigger>
-            <PopoverContent className="min-w-[400px] p-0" align="start">
-                <Command>
-                    <CommandInput placeholder="Cari pilihan..." />
-                    <CommandList>
-                        <CommandEmpty>Pilihan tidak ada</CommandEmpty>
-                        <CommandGroup>
-                            {options &&
-                                options.map((option) => (
-                                    <CommandItem
-                                        key={option.value}
-                                        value={option.value}
-                                        onSelect={() => {
-                                            onChange(option.value);
-                                            setOpen(false);
-                                            setTimeout(() => {
-                                                triggerRef.current?.focus();
-                                            }, 0);
-                                        }}
-                                    >
-                                        <Check
-                                            className={cn(
-                                                "mr-2 h-4 w-4",
-                                                value === option.value
-                                                    ? "opacity-100"
-                                                    : "opacity-0",
-                                            )}
-                                        />
-                                        <span className="w-full">
-                                            {option.label}
-                                        </span>
-                                    </CommandItem>
-                                ))}
-                        </CommandGroup>
-                    </CommandList>
-                </Command>
-            </PopoverContent>
-        </Popover>
+                    <CircleX size={16} />
+                </button>
+            ) : (
+                <Search
+                    className="absolute top-2.5 right-2 text-gray-500"
+                    size={16}
+                />
+            )}
+        </div>
     );
 }
 
@@ -691,13 +592,17 @@ export const PaginatorBuilder = ({
     const pageNumbers = generatePageNumbers();
     const isPrevDisabled = currentPage === 1;
     const isNextDisabled = currentPage === totalPage;
+    const expectedNextUrl = new URL(window.location.href);
+    expectedNextUrl.searchParams.set("page", (currentPage + 1).toString());
+    const expectedPrevUrl = new URL(window.location.href);
+    expectedPrevUrl.searchParams.set("page", (currentPage - 1).toString());
 
     return (
-        <Pagination className="flex justify-end mt-4">
+        <Pagination className="flex w-full justify-end mt-4">
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
-                        href={isPrevDisabled ? "#" : prevUrl}
+                        href={isPrevDisabled ? "#" : expectedPrevUrl.toString()}
                         className={cn(
                             isPrevDisabled && "pointer-events-none opacity-50",
                         )}
@@ -717,11 +622,12 @@ export const PaginatorBuilder = ({
 
                     const pageNum = page as number;
                     const isActive = pageNum === currentPage;
-
+                    const eachPageUrl = new URL(window.location.href);
+                    eachPageUrl.searchParams.set("page", pageNum.toString());
                     return (
                         <PaginationItem key={pageNum}>
-                            <a
-                                href={`?page=${pageNum}`}
+                            <Link
+                                href={eachPageUrl.toString()}
                                 className={cn(
                                     "flex h-9 w-9 items-center justify-center rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
                                     isActive &&
@@ -729,14 +635,14 @@ export const PaginatorBuilder = ({
                                 )}
                             >
                                 {pageNum}
-                            </a>
+                            </Link>
                         </PaginationItem>
                     );
                 })}
 
                 <PaginationItem>
                     <PaginationNext
-                        href={isNextDisabled ? "#" : nextUrl}
+                        href={isNextDisabled ? "#" : expectedNextUrl.toString()}
                         className={cn(
                             isNextDisabled && "pointer-events-none opacity-50",
                         )}
@@ -747,22 +653,22 @@ export const PaginatorBuilder = ({
     );
 };
 
-export const RichTextEditorInput = ({
-    value,
-    onChange,
-    placeholder = "Tulis sesuatu...",
-    className,
-    disabled = false,
-}: RichTextEditorInputProps) => {
-    return (
-        <div className={className}>
-            <ReactQuill
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-                readOnly={disabled}
-                theme="snow"
-            />
-        </div>
-    );
-};
+// export const RichTextEditorInput = ({
+//     value,
+//     onChange,
+//     placeholder = "Tulis sesuatu...",
+//     className,
+//     disabled = false,
+// }: RichTextEditorInputProps) => {
+//     return (
+//         <div className={className}>
+//             <ReactQuill
+//                 value={value}
+//                 onChange={onChange}
+//                 placeholder={placeholder}
+//                 readOnly={disabled}
+//                 theme="snow"
+//             />
+//         </div>
+//     );
+// };
