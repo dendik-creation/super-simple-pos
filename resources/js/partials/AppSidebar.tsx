@@ -19,9 +19,9 @@ export default function AppSidebar({ role }: { role: string }) {
         <Sidebar>
             <SidebarContent className="bg-amber-200 min-h-full relative h-full flex flex-col">
                 <SidebarHeader className="mt-3 ms-3 gap-0">
-                    <span className="text-black/80 font-bold">App Name</span>
+                    <span className="text-black/80 font-bold">Sembakoku</span>
                     <span className="text-black/60 text-sm font-normal">
-                        App Description
+                        Mudah dan Tersimpan
                     </span>
                 </SidebarHeader>
                 <SidebarGroup>

@@ -1,4 +1,14 @@
-import { Grid2X2, LucideProps } from "lucide-react";
+import {
+    ArrowRightLeft,
+    BanknoteArrowDown,
+    BanknoteArrowUp,
+    Grid2X2,
+    HandCoins,
+    LucideProps,
+    Package,
+    Users,
+    Users2,
+} from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 export type NavItems = {
@@ -14,8 +24,65 @@ const sidebarNavs: NavItems = [
     {
         type: "item",
         title: "Dashboard",
-        url: "/dashboard",
+        url: "/admin/dashboard",
         icon: Grid2X2,
+    },
+    {
+        type: "splitter",
+        url: "#",
+        title: "Master Data",
+    },
+    {
+        type: "item",
+        title: "Data Pengguna",
+        url: "/admin/users",
+        icon: Users2,
+    },
+    {
+        type: "item",
+        title: "Data Pelanggan",
+        url: "/admin/customers",
+        icon: Users,
+    },
+    {
+        type: "item",
+        title: "Data Produk",
+        url: "/admin/products",
+        icon: Package,
+    },
+    {
+        type: "splitter",
+        url: "#",
+        title: "Data Transaksi",
+    },
+    {
+        type: "item",
+        title: "Riwayat Transaksi",
+        url: "/admin/transactions/records",
+        icon: ArrowRightLeft,
+    },
+    {
+        type: "item",
+        title: "Hutang Pelanggan",
+        url: "/admin/debts",
+        icon: HandCoins,
+    },
+    {
+        type: "splitter",
+        url: "#",
+        title: "Laporan Keuangan",
+    },
+    {
+        type: "item",
+        title: "Pemasukan",
+        url: "/admin/finance/incomes",
+        icon: BanknoteArrowDown,
+    },
+    {
+        type: "item",
+        title: "Pengeluaran (Kulaan)",
+        url: "/admin/finance/expense",
+        icon: BanknoteArrowUp,
     },
 ];
 

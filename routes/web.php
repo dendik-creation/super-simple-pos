@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 // Global Controllers
 use App\Http\Controllers\Global\AuthController;
+use App\Http\Controllers\Global\DashboardController;
+// Spesific Controllers
+use App\Http\Controllers\Admin\UserController;
 
 Route::get("/", [AuthController::class, "signedInStatus"])->name("login");
 Route::prefix("auth")->group(function () {
@@ -17,3 +20,33 @@ Route::prefix("auth")->group(function () {
 Route::post("/auth/signout", [AuthController::class, "signOut"])
     ->middleware("auth")
     ->name("auth.signout.store");
+
+// Admin Routes (Auth)
+Route::prefix("admin")
+    ->middleware("auth")
+    ->group(function () {
+        // Dashboard
+        Route::get("/dashboard", [DashboardController::class, "index"])->name(
+            "dashboard.index",
+        );
+
+        // Users
+        Route::prefix("users")->group(function () {
+            Route::get("/", [UserController::class, "index"])->name(
+                "users.index",
+            );
+            Route::post("/", [UserController::class, "store"])->name(
+                "users.store",
+            );
+            Route::put("/{user}", [UserController::class, "update"])->name(
+                "users.update",
+            );
+            Route::delete("/{user}", [UserController::class, "destroy"])->name(
+                "users.destroy",
+            );
+            Route::put("/{id}/reset-password", [
+                UserController::class,
+                "resetPassword",
+            ])->name("admin.users.reset-password");
+        });
+    });

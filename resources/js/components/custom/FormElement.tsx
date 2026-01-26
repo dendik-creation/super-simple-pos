@@ -105,6 +105,137 @@ export function SearchInput({
     );
 }
 
+export function SelectSearchInput({
+    value,
+    options,
+    onChange,
+    placeholder,
+    removeValue,
+    className,
+    tabIndex = 0,
+    disabled = false,
+}: {
+    value: string;
+    options: SelectOption[];
+    onChange: (value: string | number) => void;
+    placeholder?: string;
+    removeValue?: () => void;
+    className?: string;
+    tabIndex?: number;
+    disabled?: boolean;
+}) {
+    const [open, setOpen] = useState(false);
+    const triggerRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if (!open) return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Tab") {
+                setOpen(false);
+            }
+        };
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [open]);
+
+    return (
+        <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <div
+                    ref={triggerRef}
+                    role="combobox"
+                    aria-expanded={open}
+                    tabIndex={disabled ? -1 : tabIndex}
+                    aria-disabled={disabled}
+                    className={cn(
+                        "min-w-full py-1.5 justify-between relative border border-input rounded-md px-4 flex items-center cursor-pointer outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                        disabled &&
+                            "bg-gray-100 text-gray-400 cursor-not-allowed opacity-60",
+                        className,
+                    )}
+                    onKeyDown={(e) => {
+                        if (disabled) return;
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setOpen(!open);
+                        }
+                    }}
+                    onClick={() => {
+                        if (!disabled) setOpen((prev) => !prev);
+                    }}
+                >
+                    {value ? (
+                        <span className="font-normal">
+                            {
+                                options.find((option) => option.value == value)
+                                    ?.label
+                            }
+                        </span>
+                    ) : (
+                        <span className="font-normal text-black">
+                            {placeholder}
+                        </span>
+                    )}
+                    {value != "" &&
+                    value != undefined &&
+                    removeValue &&
+                    !disabled ? (
+                        <span
+                            className="ml-2 h-4 w-4 shrink-0 opacity-50 cursor-pointer"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                removeValue();
+                            }}
+                        >
+                            <CircleX size={20} />
+                        </span>
+                    ) : (
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    )}
+                </div>
+            </PopoverTrigger>
+            {!disabled && (
+                <PopoverContent className="min-w-[400px] p-0" align="start">
+                    <Command>
+                        <CommandInput placeholder="Cari pilihan..." />
+                        <CommandList>
+                            <CommandEmpty>Pilihan tidak ada</CommandEmpty>
+                            <CommandGroup>
+                                {options &&
+                                    options.map((option, index) => (
+                                        <CommandItem
+                                            key={`${option.value}-${index}`}
+                                            value={`${option.label}-${option.value}`}
+                                            onSelect={() => {
+                                                onChange(option.value);
+                                                setOpen(false);
+                                                setTimeout(() => {
+                                                    triggerRef.current?.focus();
+                                                }, 0);
+                                            }}
+                                        >
+                                            <Check
+                                                className={cn(
+                                                    "mr-2 h-4 w-4",
+                                                    value === option.value
+                                                        ? "opacity-100"
+                                                        : "opacity-0",
+                                                )}
+                                            />
+                                            <span className="w-full">
+                                                {option.label}
+                                            </span>
+                                        </CommandItem>
+                                    ))}
+                            </CommandGroup>
+                        </CommandList>
+                    </Command>
+                </PopoverContent>
+            )}
+        </Popover>
+    );
+}
+
 export const MultiSelectSearchInput = ({
     values,
     options,

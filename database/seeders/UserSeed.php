@@ -17,6 +17,7 @@ class UserSeed extends Seeder
         User::create([
             "name" => "Admin Warung",
             "username" => "myadmin",
+            "role" => "admin",
             "password" => Hash::make("12345"),
         ]);
     }

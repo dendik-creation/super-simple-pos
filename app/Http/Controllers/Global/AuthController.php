@@ -19,7 +19,7 @@ class AuthController extends Controller
             return Inertia::location("/auth/signin");
         }
         Session::flash("success", "Login berhasil");
-        return Inertia::location("/dashboard");
+        return Inertia::location("/admin/dashboard");
     }
 
     public function signInView()
