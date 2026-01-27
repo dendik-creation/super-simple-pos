@@ -7,6 +7,7 @@ use App\Http\Controllers\Global\DashboardController;
 // Spesific Controllers
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ProductController;
 
 Route::get("/", [AuthController::class, "signedInStatus"])->name("login");
 Route::prefix("auth")->group(function () {
@@ -66,5 +67,22 @@ Route::prefix("admin")
                 CustomerController::class,
                 "destroy",
             ])->name("admin.customers.destroy");
+        });
+
+        // Products
+        Route::prefix("products")->group(function () {
+            Route::get("/", [ProductController::class, "index"])->name(
+                "admin.products.index",
+            );
+            Route::post("/", [ProductController::class, "store"])->name(
+                "admin.products.store",
+            );
+            Route::put("/{user}", [ProductController::class, "update"])->name(
+                "admin.products.update",
+            );
+            Route::delete("/{user}", [
+                ProductController::class,
+                "destroy",
+            ])->name("admin.products.destroy");
         });
     });

@@ -8,6 +8,14 @@ class TransactionItem extends Model
 {
     protected $guarded = ["id"];
     protected $hidden = ["created_at", "updated_at"];
+    protected $casts = [
+        "transaction_id" => "integer",
+        "product_id" => "integer",
+        "quantity" => "integer",
+        "cost_price" => "integer",
+        "unit_price" => "integer",
+        "total_price" => "integer",
+    ];
 
     public function transaction()
     {
@@ -16,6 +24,6 @@ class TransactionItem extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class)->withTrashed();
     }
 }

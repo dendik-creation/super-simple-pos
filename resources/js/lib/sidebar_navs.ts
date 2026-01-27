@@ -2,10 +2,12 @@ import {
     ArrowRightLeft,
     BanknoteArrowDown,
     BanknoteArrowUp,
+    Coins,
     Grid2X2,
     HandCoins,
     LucideProps,
     Package,
+    ShoppingBag,
     Users,
     Users2,
 } from "lucide-react";
@@ -26,6 +28,12 @@ const sidebarNavs: NavItems = [
         title: "Dashboard",
         url: "/admin/dashboard",
         icon: Grid2X2,
+    },
+    {
+        type: "item",
+        title: "Transaksi Baru",
+        url: "/admin/transactions/create",
+        icon: ShoppingBag,
     },
     {
         type: "splitter",
@@ -83,6 +91,12 @@ const sidebarNavs: NavItems = [
         title: "Pengeluaran (Kulaan)",
         url: "/admin/finance/expense",
         icon: BanknoteArrowUp,
+    },
+    {
+        type: "item",
+        title: "Laba Rugi",
+        url: "/admin/finance/profit-loss",
+        icon: Coins,
     },
 ];
 

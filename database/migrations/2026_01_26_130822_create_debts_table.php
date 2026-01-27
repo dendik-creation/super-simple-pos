@@ -17,9 +17,8 @@ return new class extends Migration {
                 ->constrained("customers")
                 ->onDelete("cascade");
             $table->integer("debt_amount");
-            $table->dateTime("debt_date")->default(now());
-            $table->integer("paid_amount");
-            $table->dateTime("completed_at")->nullable();
+            $table->integer("remaining_debt_amount");
+            $table->dateTime("debt_time")->useCurrent();
             $table
                 ->foreignId("transaction_id")
                 ->constrained("transactions")

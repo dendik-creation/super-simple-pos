@@ -21,6 +21,7 @@ return new class extends Migration {
                 ->constrained("products")
                 ->onDelete("cascade");
             $table->integer("quantity");
+            $table->integer("cost_price"); // A.K. Harga kulaan
             $table->integer("unit_price");
             $table->integer("total_price");
             $table->timestamps();

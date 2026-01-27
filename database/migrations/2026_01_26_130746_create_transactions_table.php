@@ -21,7 +21,10 @@ return new class extends Migration {
             $table->integer("subtotal")->default(0);
             $table->integer("discount")->default(0);
             $table->integer("total")->default(0);
-            $table->dateTime("transaction_time")->default(now());
+            $table->integer("paid_amount")->default(0);
+            $table->integer("change_amount")->default(0);
+            $table->enum("payment_status", ["paid", "debt"]);
+            $table->dateTime("transaction_time")->useCurrent();
             $table->timestamps();
         });
     }

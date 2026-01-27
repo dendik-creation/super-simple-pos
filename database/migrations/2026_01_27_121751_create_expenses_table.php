@@ -10,14 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("products", function (Blueprint $table) {
+        Schema::create("expenses", function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->integer("stock");
-            $table->integer("buy_price"); // A.K. Harga kulaan
-            $table->integer("sell_price");
+            $table->string("description");
+            $table->integer("amount");
+            $table->enum("expense_type", ["operational", "capital", "other"]);
+            $table->dateTime("expense_time")->useCurrent();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("products");
+        Schema::dropIfExists("expenses");
     }
 };
