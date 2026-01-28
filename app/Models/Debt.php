@@ -19,4 +19,9 @@ class Debt extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function debt_payments()
+    {
+        return $this->hasMany(DebtPayment::class);
+    }
 }

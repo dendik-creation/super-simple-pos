@@ -28,10 +28,10 @@ export default function AppSidebar({ role }: { role: string }) {
     const items = sidebarNavs;
     return (
         <Sidebar>
-            <SidebarContent className="bg-amber-200 min-h-full relative h-full flex flex-col">
+            <SidebarContent className="bg-sky-900 min-h-full relative h-full flex flex-col">
                 <SidebarHeader className="mt-3 ms-3 gap-0">
-                    <span className="text-black/80 font-bold">Sembakoku</span>
-                    <span className="text-black/60 text-sm font-normal">
+                    <span className="text-white/80 font-bold">Sembakoku</span>
+                    <span className="text-white/60 text-sm font-normal">
                         Mudah dan Tersimpan
                     </span>
                 </SidebarHeader>
@@ -47,7 +47,7 @@ export default function AppSidebar({ role }: { role: string }) {
                                         >
                                             <SidebarMenuButton
                                                 disabled
-                                                className="text-black uppercase text-xs"
+                                                className="text-white uppercase text-xs"
                                             >
                                                 <ArrowBigRightDash />
                                                 {item.title}
@@ -58,7 +58,7 @@ export default function AppSidebar({ role }: { role: string }) {
                                     const Icon = item.icon;
                                     return (
                                         <SidebarMenuItem
-                                            className="text-black/80 transition-all mb-0.5"
+                                            className="text-white/80 transition-all mb-0.5"
                                             key={item.title}
                                         >
                                             <SidebarMenuButton

@@ -101,5 +101,20 @@ Route::prefix("admin")
                 TransactionController::class,
                 "store",
             ])->name("admin.transactions.store");
+            Route::get("/{id}", [TransactionController::class, "show"])->name(
+                "admin.transactions.show",
+            );
+            Route::get("/edit/{id}", [
+                TransactionController::class,
+                "edit",
+            ])->name("admin.transactions.edit");
+            Route::put("/update/{id}", [
+                TransactionController::class,
+                "update",
+            ])->name("admin.transactions.update");
+            Route::delete("/{id}", [
+                TransactionController::class,
+                "destroy",
+            ])->name("admin.transactions.destroy");
         });
     });
