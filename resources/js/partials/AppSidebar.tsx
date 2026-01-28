@@ -7,13 +7,24 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import sidebarNavs from "@/lib/sidebar_navs";
 import { Link } from "@inertiajs/react";
 import { ArrowBigRightDash } from "lucide-react";
+import { useEffect } from "react";
 
 export default function AppSidebar({ role }: { role: string }) {
     const pathname = window.location.pathname;
+    const { toggleSidebar } = useSidebar();
+    useEffect(() => {
+        if (
+            pathname.includes("transactions/create") ||
+            /transactions\/.*\/edit/.test(pathname)
+        ) {
+            toggleSidebar();
+        }
+    }, [pathname]);
     const items = sidebarNavs;
     return (
         <Sidebar>

@@ -17,7 +17,6 @@ return new class extends Migration {
                 ->foreignId("customer_id")
                 ->constrained("customers")
                 ->onDelete("cascade");
-            $table->string("payment_method");
             $table->integer("subtotal")->default(0);
             $table->integer("discount")->default(0);
             $table->integer("total")->default(0);

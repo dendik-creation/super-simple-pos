@@ -10,6 +10,8 @@ import BlastToaster from "@/components/custom/BlastToaster";
 interface AppLayoutProps {
     children: ReactNode;
     className?: string;
+    pageTitleHeader?: string;
+    pageDescriptionHeader?: string;
 }
 
 export const useInertiaShared = () => {
@@ -17,7 +19,12 @@ export const useInertiaShared = () => {
     return { flash };
 };
 
-export default function AppLayout({ children, className }: AppLayoutProps) {
+export default function AppLayout({
+    children,
+    className,
+    pageTitleHeader,
+    pageDescriptionHeader,
+}: AppLayoutProps) {
     const { flash } = useInertiaShared();
 
     useEffect(() => {
@@ -37,8 +44,10 @@ export default function AppLayout({ children, className }: AppLayoutProps) {
                     <AppHeader
                         name={flash?.user?.name}
                         role={flash?.user?.role}
+                        pageTitle={pageTitleHeader}
+                        pageDescription={pageDescriptionHeader}
                     />
-                    <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">
+                    <main className="flex-1 p-4 bg-gray-50 overflow-y-auto">
                         {children}
                     </main>
                     {/*<AppFooter />*/}

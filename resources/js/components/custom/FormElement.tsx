@@ -32,6 +32,7 @@ import { SelectOption } from "@/types/global";
 import { ymdToIdDate } from "../helper/helper";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Link } from "@inertiajs/react";
 
 registerPlugin(FilePondPluginFileValidateType);
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TransactionController;
 use Illuminate\Support\Facades\Route;
 // Global Controllers
 use App\Http\Controllers\Global\AuthController;
@@ -84,5 +85,21 @@ Route::prefix("admin")
                 ProductController::class,
                 "destroy",
             ])->name("admin.products.destroy");
+        });
+
+        // Transactions
+        Route::prefix("transactions")->group(function () {
+            Route::get("/records", [
+                TransactionController::class,
+                "index",
+            ])->name("admin.transactions.index");
+            Route::get("/create", [
+                TransactionController::class,
+                "create",
+            ])->name("admin.transactions.create");
+            Route::post("/store", [
+                TransactionController::class,
+                "store",
+            ])->name("admin.transactions.store");
         });
     });

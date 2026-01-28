@@ -1,15 +1,9 @@
 import { PaginatorBuilder, SearchInput } from "@/components/custom/FormElement";
-import {
-    floatToIdCurrency,
-    handleElipsisText,
-    inputDebounce,
-    ymdToIdDate,
-} from "@/components/helper/helper";
+import { floatToIdCurrency, inputDebounce } from "@/components/helper/helper";
 import AppLayout from "@/partials/AppLayout";
 import { PageTitle } from "@/partials/PageTitle";
 import { router, useForm } from "@inertiajs/react";
-import React, { useEffect, useRef } from "react";
-import AdminCustomerCreate from "./ModalCreate";
+import { useEffect, useRef } from "react";
 import AdminCustomerEdit from "./ModalEdit";
 import {
     Table,
@@ -159,7 +153,7 @@ const AdminProductIndex = ({
                         {products.data.length == 0 && (
                             <EmptyTable
                                 colSpan={6}
-                                message="Pelanggan tidak ada"
+                                message="Produk tidak ada"
                             />
                         )}
                     </TableBody>
