@@ -29,40 +29,6 @@ Perfect for **retail POS**, **small businesses**, or **SaaS POS solutions**, foc
 
 - **Shadcn UI** (React + Tailwind + Radix)
 
-### Styling
-
-- **Tailwind CSS**
-
-### Build Tool
-
-- **Vite**
-
-### State & Data Handling
-
-- Inertia props
-- UseForm Inertia
-
-### Authentication
-
-_(Customize according to your setup — Breeze, Fortify, Sanctum, Passport, etc.)_
-
-### Testing
-
-- **PHPUnit**
-- _(Optional: Jest / Vitest)_
-
-### Included Tools & Libraries
-
-- Database (MySQL, PostgreSQL, SQLite, etc.)
-- Auth (Default)
-- Laravel Excel
-- DateFns
-- ApexCharts
-- Filepond
-- Quill
-- React Hot Toast
-- etc...
-
 ## Todo
 
 Current & future features for improving the app:
@@ -72,7 +38,7 @@ Current & future features for improving the app:
 - [x] Product resources
 - [x] Mobile responsiveness
 - [x] Sales reporting dashboard
-- [x] Multi-store support
+- [ ] Multi-store support
 - [ ] Barcode scanning
 - [ ] Receipt printing
 - [ ] Role-based access control
