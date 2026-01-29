@@ -129,62 +129,59 @@ const AdminTransactionShow = ({
                                 </span>
                             </div>
                         </div>
-                        {transaction.payment_status === "debt" && (
-                            <div className="flex flex-col gap-2">
-                                <p className="font-semibold">
-                                    Riwayat Pelunasan
-                                </p>
-                                <div className="rounded-md border">
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead className="bg-stone-200 font-semibold">
-                                                    #
-                                                </TableHead>
-                                                <TableHead className="bg-stone-200 font-semibold">
-                                                    Nominal
-                                                </TableHead>
-                                                <TableHead className="bg-stone-200 font-semibold">
-                                                    Waktu
-                                                </TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {transaction.debt &&
-                                            transaction.debt.debt_payments &&
-                                            transaction.debt.debt_payments
-                                                .length > 0 ? (
-                                                transaction.debt.debt_payments.map(
-                                                    (payment, index) => (
-                                                        <TableRow key={index}>
-                                                            <TableCell>
-                                                                {index + 1}
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                {floatToIdCurrency(
-                                                                    payment.paid_amount,
-                                                                )}
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                {ymdToIdDate(
-                                                                    payment.payment_time,
-                                                                    true,
-                                                                )}
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ),
-                                                )
-                                            ) : (
-                                                <EmptyTable
-                                                    colSpan={3}
-                                                    message="Data pelunasan hutang tidak ada"
-                                                />
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </div>
+                        <div className="flex flex-col gap-2">
+                            <p className="font-semibold">
+                                Riwayat Pelunasan (karena hutang)
+                            </p>
+                            <div className="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="bg-stone-200 font-semibold">
+                                                #
+                                            </TableHead>
+                                            <TableHead className="bg-stone-200 font-semibold">
+                                                Nominal
+                                            </TableHead>
+                                            <TableHead className="bg-stone-200 font-semibold">
+                                                Tanggal
+                                            </TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {transaction.debt &&
+                                        transaction.debt.debt_payments &&
+                                        transaction.debt.debt_payments.length >
+                                            0 ? (
+                                            transaction.debt.debt_payments.map(
+                                                (payment, index) => (
+                                                    <TableRow key={index}>
+                                                        <TableCell>
+                                                            {index + 1}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {floatToIdCurrency(
+                                                                payment.paid_amount,
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {ymdToIdDate(
+                                                                payment.payment_date,
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ),
+                                            )
+                                        ) : (
+                                            <EmptyTable
+                                                colSpan={3}
+                                                message="Data pelunasan hutang tidak ada"
+                                            />
+                                        )}
+                                    </TableBody>
+                                </Table>
                             </div>
-                        )}
+                        </div>
                     </CardContent>
                 </Card>
                 {/* Card 3: Trx Details */}

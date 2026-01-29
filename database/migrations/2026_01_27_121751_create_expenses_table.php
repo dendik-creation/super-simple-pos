@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string("description");
             $table->integer("amount");
             $table->enum("expense_type", ["operational", "capital", "other"]);
-            $table->dateTime("expense_time")->useCurrent();
+            $table->date("expense_date")->useCurrent();
             $table->timestamps();
         });
     }

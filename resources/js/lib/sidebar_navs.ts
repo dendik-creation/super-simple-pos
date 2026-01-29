@@ -83,7 +83,7 @@ const sidebarNavs: NavItems = [
     {
         type: "item",
         title: "Pemasukan",
-        url: "/admin/finance/incomes",
+        url: "/admin/finance/income",
         icon: BanknoteArrowDown,
     },
     {

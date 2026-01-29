@@ -1,13 +1,5 @@
-import {
-    PaginatorBuilder,
-    SearchInput,
-    SelectSearchInput,
-} from "@/components/custom/FormElement";
-import {
-    humanRole,
-    inputDebounce,
-    ymdToIdDate,
-} from "@/components/helper/helper";
+import { PaginatorBuilder, SearchInput } from "@/components/custom/FormElement";
+import { inputDebounce } from "@/components/helper/helper";
 import { Button } from "@/components/ui/button";
 import {
     Table,
@@ -20,7 +12,7 @@ import {
 import AppLayout from "@/partials/AppLayout";
 import { PageTitle, PageTitleProps } from "@/partials/PageTitle";
 import { router, useForm } from "@inertiajs/react";
-import { SearchXIcon, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import AdminUserCreate from "./ModalCreate";
 import AdminUserEdit from "./ModalEdit";

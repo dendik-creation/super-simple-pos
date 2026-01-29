@@ -10,7 +10,6 @@ class DebtPayment extends Model
     protected $casts = [
         "debt_id" => "integer",
         "paid_amount" => "integer",
-        "payment_time" => "datetime",
     ];
     protected $hidden = ["created_at", "updated_at"];
 

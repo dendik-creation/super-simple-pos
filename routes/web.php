@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\TransactionController;
 use Illuminate\Support\Facades\Route;
 // Global Controllers
 use App\Http\Controllers\Global\AuthController;
@@ -8,7 +7,10 @@ use App\Http\Controllers\Global\DashboardController;
 // Spesific Controllers
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\ReportController;
 
 Route::get("/", [AuthController::class, "signedInStatus"])->name("login");
 Route::prefix("auth")->group(function () {
@@ -116,5 +118,40 @@ Route::prefix("admin")
                 TransactionController::class,
                 "destroy",
             ])->name("admin.transactions.destroy");
+        });
+
+        // Debts
+        Route::prefix("debts")->group(function () {
+            Route::get("/", [DebtController::class, "index"])->name(
+                "admin.debts.index",
+            );
+            Route::get("/edit/{id}", [DebtController::class, "edit"])->name(
+                "admin.debts.edit",
+            );
+            Route::put("/{id}", [DebtController::class, "update"])->name(
+                "admin.debts.update",
+            );
+        });
+
+        // Finance Reports
+        Route::prefix("finance")->group(function () {
+            Route::get("/income", [ReportController::class, "income"])->name(
+                "admin.reports.income",
+            );
+            Route::get("/expense", [ReportController::class, "expense"])->name(
+                "admin.reports.expense",
+            );
+            Route::post("/expense", [ReportController::class, "expenseStore"])->name(
+                "admin.reports.expense.store",
+            );
+            Route::put("/expense/{id}", [ReportController::class, "expenseUpdate"])->name(
+                "admin.reports.expense.update",
+            );
+            Route::delete("/expense/{id}", [ReportController::class, "expenseDestroy"])->name(
+                "admin.reports.expense.destroy",
+            );
+            Route::get("/profit-loss", [ReportController::class, "profitLoss"])->name(
+                "admin.reports.profit-loss",
+            );
         });
     });

@@ -8,8 +8,8 @@ use App\Models\Debt;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-use Session;
 
 class TransactionController extends Controller
 {
@@ -17,11 +17,11 @@ class TransactionController extends Controller
     {
         $latestTransaction = Transaction::latest()->first();
         $lastInvoiceNumber = $latestTransaction
-            ? (int) substr($latestTransaction->invoice_code, -6)
+            ? (int) substr($latestTransaction->invoice_code, -4)
             : 0;
         $newInvoiceNumber = str_pad(
             $lastInvoiceNumber + 1,
-            6,
+            4,
             "0",
             STR_PAD_LEFT,
         );

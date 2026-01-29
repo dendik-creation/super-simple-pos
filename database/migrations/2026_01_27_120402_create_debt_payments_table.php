@@ -18,7 +18,7 @@ return new class extends Migration {
                 ->onDelete("cascade");
 
             $table->integer("paid_amount");
-            $table->dateTime("payment_time")->useCurrent();
+            $table->date("payment_date")->useCurrent();
             $table->timestamps();
         });
     }
