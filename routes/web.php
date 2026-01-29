@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 // Global Controllers
 use App\Http\Controllers\Global\AuthController;
 use App\Http\Controllers\Global\DashboardController;
+use App\Http\Controllers\Global\ProfileController;
 // Spesific Controllers
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CustomerController;
@@ -155,3 +156,21 @@ Route::prefix("admin")
             );
         });
     });
+
+    // Global Routes
+Route::middleware("auth")->group(function () {
+    Route::put("/profile/update", [
+        ProfileController::class,
+        "profileUpdate",
+    ])->name("profile.update");
+
+    // Change Password
+    Route::post("/profile/check-password", [
+        ProfileController::class,
+        "checkPassword",
+    ])->name("profile.check-password");
+    Route::put("/profile/change-password", [
+        ProfileController::class,
+        "changePassword",
+    ])->name("profile.change-password");
+});

@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SignoutMenu from "@/components/custom/SignoutMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ProfileUpdateModal from "@/components/custom/ProfileUpdateModal";
+import ChangePasswordModal from "@/components/custom/ChangePasswordModal";
 interface AppHeaderProps {
     classNames?: string;
     name: string;
@@ -72,7 +74,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end">
                     <DropdownMenuGroup>
-                        {/* Custom Dropdown Menu */}
+                        <ProfileUpdateModal />
+                        <ChangePasswordModal />
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <SignoutMenu />
